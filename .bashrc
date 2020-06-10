@@ -91,6 +91,7 @@ fi
 # some more ls aliases
 alias sl='ls'
 alias ks='ls'
+alias k='ls'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -114,6 +115,8 @@ alias g11='g++ -std=c++11'
 alias g14='g++ -std=c++14'
 alias g17='g++ -std=c++17'
 alias bld='mkdir build -p ;cd build ;cmake .. ;make ;cd -'
+alias pip='pip3'
+alias pf='pip3 freeze'
 alias py='python3'
 alias py2='python2.7'
 alias rls='rails'
@@ -121,6 +124,7 @@ alias ble='bundle'
 alias arduino='cd ${HOME}/Documents/arduino-1.8.5 ;source arduino ;cd -'
 alias eixt='exit'
 alias shutdown='shutdown -h now'
+alias make='make -j4'
 
 # trash-cli
 # Clone from 'https://github.com/andreafrancia/trash-cli'
@@ -225,12 +229,13 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 echo -e "\e[32;1m${USER}@${HOSTNAME}\e[m:\e[34;1m~\e[m$"
 echo -e "\e[1m Hi, ${USER} !!\e[m"
 
-
 export PATH=$HOME/.rbenv/bin:$PATH
 eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
+export PATH="/home/tetsu/.pyenv/bin:$PATH"
+eval "$(pyenv init - zsh --no-rehash)"
+eval "$(pyenv virtualenv-init -)"
 
-export PATH=$HOME/.rbenv/bin:$PATH
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# Flutter
+export PATH="$PATH:$HOME/flutter/bin" 

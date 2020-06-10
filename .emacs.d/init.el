@@ -4,6 +4,10 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(fset 'package-desc-vers 'package--ac-desc-version)
 (package-initialize)
 
 (setq inhibit-splash-screen t)
@@ -148,10 +152,23 @@
 ;; 終了時にオートセーブファイルを削除する
 (setq delete-auto-save-files t)
 
+;;コピー
+(define-key global-map(kbd "C-c c")'copy-region-as-kill)
+;;ペースト
+(define-key global-map (kbd "C-v") 'yank)
+;;一個前のペースト(ペーストの後にのみ有効)
+(define-key global-map (kbd "C-y") 'yank-pop)
+
 ;; クリップボードへのコピー
 (setq x-select-enable-clipboard t)
 
 (require 'xclip)
 (xclip-mode 1)
-;(require 'cc-mode)
+
+;;(when (and (require 'python nil t) (require 'elpy nil t))
+;;  (elpy-enable))
+
+;;(when (require 'set-pyenv-version-path nil t)
+;; (add-to-list 'exec-path "~/.pyenv/shims"))
+
 
