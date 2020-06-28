@@ -56,9 +56,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(custom-enabled-themes (quote (tango-dark)))
  '(package-selected-packages
    (quote
-    (## yaml-mode web-mode package-utils golden-ratio coffee-mode)))
+    (neotree ## yaml-mode web-mode package-utils golden-ratio coffee-mode)))
  '(send-mail-function (quote mailclient-send-it))
  '(tab-width 4))
 
@@ -172,3 +175,18 @@
 ;; (add-to-list 'exec-path "~/.pyenv/shims"))
 
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+;;current directory 表示
+(let ((ls (member 'mode-line-buffer-identification
+                  mode-line-format)))
+  (setcdr ls
+    (cons '(:eval (concat " ("
+            (abbreviate-file-name default-directory)
+            ")"))
+            (cdr ls))))
