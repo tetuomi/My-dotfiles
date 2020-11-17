@@ -105,8 +105,8 @@ alias cpdp='cd ../../'
 alias cds='cd -'
 alias cdd='cd ${HOME}/dotfiles'
 alias rm='trash-put'
-alias em='emacs'
-alias ew='emacs -nw'
+alias em='emacs27'
+alias ew='emacs27 -nw'
 alias ec='emacsclient ./'
 alias cm='catkin_make'
 alias clipboard='xsel --clipboard --input'
@@ -125,6 +125,7 @@ alias arduino='cd ${HOME}/Documents/arduino-1.8.5 ;source arduino ;cd -'
 alias eixt='exit'
 alias shutdown='shutdown -h now'
 alias make='make -j4'
+alias refresh='. ~/.bashrc'
 
 # trash-cli
 # Clone from 'https://github.com/andreafrancia/trash-cli'
@@ -239,3 +240,17 @@ eval "$(pyenv virtualenv-init -)"
 
 # Flutter
 export PATH="$PATH:$HOME/flutter/bin" 
+
+# Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
+export COCOS_CONSOLE_ROOT="/home/tetsu/cocos2d-x/tools/cocos2d-console/bin"
+export PATH=$COCOS_CONSOLE_ROOT:$PATH
+
+# Add environment variable COCOS_X_ROOT for cocos2d-x
+export COCOS_X_ROOT="/home/tetsu"
+export PATH=$COCOS_X_ROOT:$PATH
+
+# Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
+export COCOS_TEMPLATES_ROOT="/home/tetsu/cocos2d-x/templates"
+export PATH=$COCOS_TEMPLATES_ROOT:$PATH
+#export CXX='g++-9'
+#export CC='g++-9'

@@ -3,9 +3,9 @@
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+;; You may delete these explanatory comments
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (fset 'package-desc-vers 'package--ac-desc-version)
 (package-initialize)
@@ -58,11 +58,10 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
- '(custom-enabled-themes (quote (tango-dark)))
+ '(custom-enabled-themes '(tango-dark))
  '(package-selected-packages
-   (quote
-    (neotree ## yaml-mode web-mode package-utils golden-ratio coffee-mode)))
- '(send-mail-function (quote mailclient-send-it))
+   '(company-tabnine company neotree ## yaml-mode web-mode package-utils golden-ratio coffee-mode))
+ '(send-mail-function 'mailclient-send-it)
  '(tab-width 4))
 
 ;; ミニバッファの履歴を保存する
@@ -190,3 +189,38 @@
             (abbreviate-file-name default-directory)
             ")"))
             (cdr ls))))
+
+(require 'company)
+(global-company-mode) ; 全バッファで有効にする
+(setq company-transformers '(company-sort-by-backend-importance)) ;; ソート順
+(setq company-idle-delay 0) ; デフォルトは0.5
+(setq company-minimum-prefix-length 3) ; デフォルトは4
+(setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+(setq completion-ignore-case t)
+(setq company-dabbrev-downcase nil)
+(global-set-key (kbd "C-M-i") 'company-complete)
+(define-key company-active-map (kbd "C-n") 'company-select-next) ;; C-n, C-pで補完候補を次/前の候補を選択
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+(define-key company-search-map (kbd "C-n") 'company-select-next)
+(define-key company-search-map (kbd "C-p") 'company-select-previous)
+(define-key company-active-map (kbd "C-s") 'company-filter-candidates) ;; C-sで絞り込む
+(define-key company-active-map (kbd "C-i") 'company-complete-selection) ;; TABで候補を設定
+(define-key company-active-map [tab] 'company-complete-selection) ;; TABで候補を設定
+(define-key company-active-map (kbd "C-f") 'company-complete-selection) ;; C-fで候補を設定
+(define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete) ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+
+;; yasnippetとの連携
+(defvar company-mode/enable-yas t
+  "Enable yasnippet for all backends.")
+(defun company-mode/backend-with-yas (backend)
+  (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+      backend
+    (append (if (consp backend) backend (list backend))
+            '(:with company-yasnippet))))
+;;(setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+
+(require 'company-tabnine)
+(add-to-list 'company-backends #'company-tabnine)
+;; すぐに完了をトリガーします。
+(setq company-idle-delay 0) ;;候補者に番号を付けます（M-1、M-2などを使用して完了を選択します）。
+(setq company-show-numbers t)
