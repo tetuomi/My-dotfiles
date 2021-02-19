@@ -57,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     # PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
@@ -254,3 +254,7 @@ export COCOS_TEMPLATES_ROOT="/home/tetsu/cocos2d-x/templates"
 export PATH=$COCOS_TEMPLATES_ROOT:$PATH
 #export CXX='g++-9'
 #export CC='g++-9'
+source "$HOME/.cargo/env"
+
+# Rust
+export PATH="$HOME/.cargo/bin:$PATH"
