@@ -24,6 +24,7 @@
                     :foreground "grey76"
                     :height 0.9)
 (column-number-mode t)
+(setq linum-format "%3d ")
 
 ;;日本語フォント設定
 (set-fontset-font t 'japanese-jisx0208' "TakaoPGothic")
@@ -225,3 +226,10 @@
 ;; すぐに完了をトリガーします。
 (setq company-idle-delay 0) ;;候補者に番号を付けます（M-1、M-2などを使用して完了を選択します）。
 (setq company-show-numbers t)
+
+
+;; Rust
+(require 'rustic)
+(setq-default rustic-format-trigger 'on-save)
+(setq rustic-rustfmt-bin "~/.cargo/bin/rustfmt")
+(add-to-list 'rustic-rustfmt-config-alist '("edition" . "2018"))
