@@ -149,6 +149,10 @@ function ssh-activate() {
     ssh-add $1
 }
 
+function cd() {
+    builtin cd $@ && ls -G;
+}
+
 function kyutech-login() {
     username="q111026d"
     hostname="remote-t.isc.kyutech.ac.jp"
