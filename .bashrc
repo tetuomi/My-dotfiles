@@ -35,43 +35,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    # PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-fi
-unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+PS1='\n${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -105,8 +69,8 @@ alias cpdp='cd ../../'
 alias cds='cd -'
 alias cdd='cd ${HOME}/dotfiles'
 alias rm='trash-put'
-alias em='emacs27'
-alias ew='emacs27 -nw'
+alias em='emacs'
+alias ew='emacs -nw'
 alias ec='emacsclient ./'
 alias cm='catkin_make'
 alias clipboard='xsel --clipboard --input'
@@ -119,6 +83,7 @@ alias pip='pip3'
 alias pf='pip3 freeze'
 alias py='python3'
 alias py2='python2.7'
+alias python='python3'
 alias rls='rails'
 alias ble='bundle'
 alias arduino='cd ${HOME}/Documents/arduino-1.8.5 ;source arduino ;cd -'
@@ -150,33 +115,12 @@ function ssh-activate() {
 }
 
 function cd() {
-    builtin cd $@ && ls -G;
-}
-
-function kyutech-login() {
-    username="q111026d"
-    hostname="remote-t.isc.kyutech.ac.jp"
-    ssh -l "${username}" ${hostname}
-}
-
-function kyutech-pull() {
-    if [ $# -ne 1 ]; then
-        echo "Prease set file or directory which you want."
-        return
+    builtin cd $@ &&
+    if [ -f "Pipfile" ] ; then
+        pipenv shell
+    else
+        ls -G;
     fi
-    username="q111026d"
-    hostname="remote-t.isc.kyutech.ac.jp"
-    scp -r "${username}@${hostname}:/home/t/${username}/$1" ${PWD}
-}
-
-function kyutech-push() {
-    if [ $# -ne 1 ]; then
-        echo "Prease set file or directory which you want."
-        return
-    fi
-    username="q111026d"
-    hostname="remote-t.isc.kyutech.ac.jp"
-    scp -r ${PWD} "${username}@${hostname}:/home/t/${username}/$1"
 }
 
 # Alias definitions.
@@ -199,32 +143,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#ROS workspace
-ros_kinetic="/opt/ros/kinetic/setup.bash"
-
-catkin_ws=(
-    ${ros_kinetic}
-    "${HOME}/*/*/*/opencv3mixsing/devel/setup.bash"
-    "${HOME}/*/ros_practice/devel/setup.bash"
-    "${HOME}/*/fourth_robot_ws/devel/setup.bash"
-    "${HOME}/*/*/ros_homosapi_ws/devel/setup.bash"
-    "${HOME}/works/slambot_ws/devel/setup.bash"
-    "${HOME}/*/fifth_robot_pkg/devel/setup.bash"
-    "${HOME}/works/imu_filter_ws/devel/setup.bash"
-    "${HOME}/works/cartographer_ws/install_isolated/setup.bash"
-    "${HOME}/works/blam/internal/devel/setup.bash"
-) 
-for target in ${catkin_ws[@]}; do
-    if [ -e ${target} ]; then
-        source ${target}
-    fi
-done
 export EDITOR='emacs'
 
 # Ruby on Rails
-export PATH=$HOME/.rbenv/bin:$PATH
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# export PATH=$HOME/.rbenv/bin:$PATH
+# eval "$(rbenv init -)"
+# export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
 # For point_cloud_viewer
 # source $HOME/.cargo/env
@@ -234,31 +158,13 @@ export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 echo -e "\e[32;1m${USER}@${HOSTNAME}\e[m:\e[34;1m~\e[m$"
 echo -e "\e[1m Hi, ${USER} !!\e[m"
 
-export PATH=$HOME/.rbenv/bin:$PATH
-eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+# export PATH=$HOME/.rbenv/bin:$PATH
+# eval "$(rbenv init -)"
+# export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
 
-export PATH="/home/tetsu/.pyenv/bin:$PATH"
-eval "$(pyenv init - zsh --no-rehash)"
-eval "$(pyenv virtualenv-init -)"
+# export PATH="/home/tetsu/.pyenv/bin:$PATH"
+# eval "$(pyenv init - zsh --no-rehash)"
+# eval "$(pyenv virtualenv-init -)"
 
 # Flutter
-export PATH="$PATH:$HOME/flutter/bin" 
-
-# Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
-export COCOS_CONSOLE_ROOT="/home/tetsu/cocos2d-x/tools/cocos2d-console/bin"
-export PATH=$COCOS_CONSOLE_ROOT:$PATH
-
-# Add environment variable COCOS_X_ROOT for cocos2d-x
-export COCOS_X_ROOT="/home/tetsu"
-export PATH=$COCOS_X_ROOT:$PATH
-
-# Add environment variable COCOS_TEMPLATES_ROOT for cocos2d-x
-export COCOS_TEMPLATES_ROOT="/home/tetsu/cocos2d-x/templates"
-export PATH=$COCOS_TEMPLATES_ROOT:$PATH
-#export CXX='g++-9'
-#export CC='g++-9'
-source "$HOME/.cargo/env"
-
-# Rust
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="$PATH:$HOME/flutter/bin"
